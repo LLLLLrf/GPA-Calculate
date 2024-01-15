@@ -1,15 +1,21 @@
 // ==UserScript==
-// @name         scnu教务系统优化
-// @version      2.2
-// @description  华南师范大学新教务系统优化
-// @author       Jkey, LLLLLrf
+// @name         SCNU教务系统绩点计算
+// @namespace    http://tampermonkey.net/
+// @version      2024-01-15
+// @description  一个用来给华师教务系统算分和跳过5s等待的油猴脚本，修复了原脚本不支持查看多于15门课，不支持计算含有免修、缓考、通过性课程的学期，不支持展示当前总学时等一系列问题，原作者Jkey，Tampermonkey脚本名：scnu教务系统优化v2.2
+// @author       Ruofan Liao & Jkey
 // @match        https://jwxt.scnu.edu.cn/xtgl/index_initMenu.html
 // @match        https://jwxt.scnu.edu.cn/xtgl/index_initMenu.html?jsdm=*
 // @match        https://jwxt.scnu.edu.cn/cjcx*
 // @match        https://jwxt.scnu.edu.cn/cdjy*
-// @grant        none
+// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant        GPL
 // @license      GPL
+// @downloadURL https://update.greasyfork.org/scripts/484926/SCNU%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F%E7%BB%A9%E7%82%B9%E8%AE%A1%E7%AE%97.user.js
+// @updateURL https://update.greasyfork.org/scripts/484926/SCNU%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F%E7%BB%A9%E7%82%B9%E8%AE%A1%E7%AE%97.meta.js
 // ==/UserScript==
+
+
 
 (function () {
     'use strict';
