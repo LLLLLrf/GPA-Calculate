@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SCNU教务系统绩点计算
 // @namespace    http://tampermonkey.net/
-// @version      v3.2
+// @version      3.3
 // @description  一个用来给华师教务系统算分和跳过5s等待的油猴脚本，修复了原脚本不支持查看多于15门课，不支持计算含有免修、缓考、通过性课程的学期，不支持展示当前总学时等一系列问题，绩点计算到小数点后三位，原作者Jkey，Tampermonkey脚本名：scnu教务系统优化v2.2
 // @author       Ruofan Liao & Jkey
 // @github       https://github.com/LLLLLrf/GPA-Calculate/tree/main
@@ -12,6 +12,8 @@
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        GPL
 // @license      GPL
+// @downloadURL https://update.greasyfork.org/scripts/484926/SCNU%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F%E7%BB%A9%E7%82%B9%E8%AE%A1%E7%AE%97.user.js
+// @updateURL https://update.greasyfork.org/scripts/484926/SCNU%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F%E7%BB%A9%E7%82%B9%E8%AE%A1%E7%AE%97.meta.js
 // ==/UserScript==
 
 
@@ -28,13 +30,30 @@
     }
 
     var localAddress = location.href;
+    // if (localAddress.indexOf("initMenu") > -1 && document.getElementByClassName('navbar-nav')){
+    if (document.getElementsByClassName('navbar-nav')){
+        var searchButton = document.createElement("span");
+        searchButton.style.backgroundColor="#0483d4";
+        searchButton.style.padding='14px';
+        searchButton.style.color='white';
+        searchButton.style.fontWeight='bold';
+        searchButton.style.borderRadius='10px';
+        searchButton.onclick = function() {
+            clickMenu('N305005', '/cjcx/cjcx_cxDgXscj.html', '学生成绩查询', 'null');
+            return false;
+        };
+        searchButton.innerText=" 成绩查询 ";
+
+        $(".navbar-nav:eq(2)").append(searchButton);
+    }
 
     // 登录界面跳过5秒
-    if (localAddress.indexOf("initMenu") > -1) {
+    if (localAddress.indexOf("initMenu") > -1 && document.getElementById('btn_yd')) {
         if (document.getElementById('btn_yd')) {
             skipWaiting(() => {
                 window.location.href = _path + '/xtgl/login_loginIndex.html';
             });
+            // document.getElementById('btn_yd').click();
         }
     }
 
@@ -80,12 +99,25 @@
 
         // 首次进入
         observeChange();
-        // 监听查询按钮
+
         document.getElementById("search_go").onclick = function () {
             // console.log("点击");
             newTextNode.innerText = '平均绩点：加载中';
             observeChange();
         }
+
+        var selectXN = document.getElementById('xnm');
+        // 添加事件监听器
+        selectXN.addEventListener('change', function() {
+            var selectedValue = selectXN.value;
+            document.getElementById("search_go").click();
+        });
+        var selectXQ = document.getElementById('xqm');
+        // 添加事件监听器
+        selectXQ.addEventListener('change', function() {
+            var selectedValue = selectXQ.value;
+            document.getElementById("search_go").click();
+        });
     }
 
     function setGPA() {
@@ -116,7 +148,7 @@
             GPA /= sumCredit;
             console.log(courseList);
             $("span#avgGPA").text('平均绩点：' + GPA.toFixed(3));
-            $("span#sumCredit").text('总学分：' + sumCredit.toFixed(3));
+            $("span#sumCredit").text('总学分：' + sumCredit.toFixed(2));
             return;
         }
         var gnmkdm = $('input#gnmkdmKey').val();
@@ -133,21 +165,6 @@
             },
             "body": "xnm=" + xnm_val + "&xqm=" + xqm_val + "&_search=false&nd=" + nd + "&queryModel.showCount=100&queryModel.currentPage=1&queryModel.sortName=&queryModel.sortOrder=asc",
             "method": "POST"
-        }).then(response => response.json()).then(data => {
-            let sumCredit = 0, GPA = 0;
-            // console.log(data)
-            for (let item of data.items) {
-                if (item.cj=="缓考" || item.cj=="通过"){
-                    continue;
-                }
-                sumCredit += Number(item.xf);
-                GPA += Number(item.xfjd);
-
-            }
-            GPA /= sumCredit;
-            $("span#avgGPA").text('平均绩点：' + GPA.toFixed(2));
-            $("span#sumCredit").text('总学分：' + sumCredit.toFixed(2));
-
-        });
+        }).then(response => response.json()).then(data => {});
     }
 })();
