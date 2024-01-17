@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SCNU教务系统绩点计算
 // @namespace    http://tampermonkey.net/
-// @version      3.3
+// @version      3.4
 // @description  一个用来给华师教务系统算分和跳过5s等待的油猴脚本，修复了原脚本不支持查看多于15门课，不支持计算含有免修、缓考、通过性课程的学期，不支持展示当前总学时等一系列问题，绩点计算到小数点后三位，原作者Jkey，Tampermonkey脚本名：scnu教务系统优化v2.2
 // @author       Ruofan Liao & Jkey
 // @github       https://github.com/LLLLLrf/GPA-Calculate/tree/main
@@ -53,7 +53,7 @@
             skipWaiting(() => {
                 window.location.href = _path + '/xtgl/login_loginIndex.html';
             });
-            // document.getElementById('btn_yd').click();
+            document.getElementById('btn_yd').click();
         }
     }
 
