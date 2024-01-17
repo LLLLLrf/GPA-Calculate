@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SCNU教务系统绩点计算
 // @namespace    http://tampermonkey.net/
-// @version      3.4.1
+// @version      3.4.2
 // @description  支持功能：跳过5s等待并自动确认，计算小数点后三位绩点和学分，始终保持所有课程展示在同一页，新增快捷查分入口，选择学年学期自动更新数据，无需点击查询
 // @author       Ruofan Liao & Jkey
 // @github       https://github.com/LLLLLrf/GPA-Calculate/tree/main
@@ -12,7 +12,8 @@
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        GPL
 // @license      GPL
-// @downloadURL none
+// @downloadURL https://update.greasyfork.org/scripts/484926/SCNU%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F%E7%BB%A9%E7%82%B9%E8%AE%A1%E7%AE%97.user.js
+// @updateURL https://update.greasyfork.org/scripts/484926/SCNU%E6%95%99%E5%8A%A1%E7%B3%BB%E7%BB%9F%E7%BB%A9%E7%82%B9%E8%AE%A1%E7%AE%97.meta.js
 // ==/UserScript==
 
 
@@ -105,16 +106,10 @@
             observeChange();
         }
 
-        var selectXN = document.getElementById('xnm');
-        // 添加事件监听器
-        selectXN.addEventListener('change', function() {
-            var selectedValue = selectXN.value;
+        $("#xnm").on("change", function () {
             document.getElementById("search_go").click();
         });
-        var selectXQ = document.getElementById('xqm');
-        // 添加事件监听器
-        selectXQ.addEventListener('change', function() {
-            var selectedValue = selectXQ.value;
+        $("#xqm").on("change", function () {
             document.getElementById("search_go").click();
         });
     }
